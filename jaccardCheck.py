@@ -4,7 +4,7 @@ import json
 from minHash import (MinHasher, char_shingles, word_shingles, hash_shingles,
                      estimate_jaccard, exact_jaccard)
 
-IN_FILE = "./data/corpus_1k_with_variants.jsonl"
+IN_FILE = "./data/corpus_10k_with_variants.jsonl"
 OUT_FILE = "./data/jaccard_check.csv"
 
 MODE = "word"      # "char" hoặc "word"

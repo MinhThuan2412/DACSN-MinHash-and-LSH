@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import json
 
-P = (1 << 31) - 1  #dtype = np.uint32
+P = (1 << 31) - 1  
 
 # Shingling
 def char_shingles(text, q = 5):
@@ -40,18 +40,18 @@ class MinHasher:
     def __init__(self, k = 128, seed = 42):
         rng = np.random.default_rng(seed)
         self.k = k
-        self.a = rng.integers(1, P, size=k, dtype=np.uint32)
-        self.b = rng.integers(0, P, size=k, dtype=np.uint32)
+        self.a = rng.integers(1, P, size=k, dtype=np.uint64)
+        self.b = rng.integers(0, P, size=k, dtype=np.uint64)
 
     def signature(self, hashed, chunk = 20000):
-        sig = np.full(self.k, P, dtype=np.uint32)
+        sig = np.full(self.k, P, dtype=np.uint64)
         if hashed.size == 0:
-            return sig
+            return sig.astype(np.uint32)
         a, b = self.a[:, None], self.b[:, None] #chuyển a,b thành shape(k,1)
         for i in range(0, hashed.size, chunk):
-            x = hashed[i:i + chunk][None, :]    #tách shingle thành chunk có shape(1,chunk)
+            x = hashed[i:i + chunk].astype(np.uint64)[None, :]    #tách shingle thành chunk có shape(1,chunk)
             sig = np.minimum(sig, ((a * x + b) % P).min(axis=1))
-        return sig
+        return sig.astype(np.uint32)
 
     def signatures(self, docs_hashed):
         return np.stack([self.signature(h) for h in docs_hashed])

@@ -1,7 +1,7 @@
 import csv
 import json
 
-from minHash import (MinHasher, char_shingles, word_shingles, hash_shingles,
+from minHash_LSH import (MinHasher, char_shingles, word_shingles, hash_shingles,
                      estimate_jaccard, exact_jaccard)
 
 IN_FILE = "./data/corpus_10k_with_variants.jsonl"

@@ -126,12 +126,14 @@ def optimal_br(k, t, w_fp=1.0, w_fn=1.0, top=0):
                       for e, bb, rr, ff, nn in results[:top]]
     return best
 
-def nearest_threshold_br(k, t, top=0):
+def nearest_threshold_br(k, t, top=0, exact_k=True):
     # Chọn (b, r) sao cho ngưỡng θ = (1/b)^(1/r) gần t nhất.
     # top > 0      : Trả về danh sách `top` cấu hình
     results = []
     for b in range(1, k + 1):
         for r in range(1, k // b + 1):
+            if exact_k and b * r != k:
+                continue
             theta = (1 / b) ** (1 / r)
             # hòa độ lệch thì ưu tiên b*r lớn hơn (dùng nhiều hàm băm hơn)
             results.append((abs(theta - t), -b * r, b, r, theta))
